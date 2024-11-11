@@ -3,7 +3,7 @@ import { userController } from './user.controller';
 
 const router = express.Router();
 
-router.get(
+router.post(
     "/",
     userController.createAdmin
 )
