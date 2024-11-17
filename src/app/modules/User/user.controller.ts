@@ -8,7 +8,6 @@ const createAdmin = async (req: Request, res: Response) => {
     res.send(result);
 }
 
-
 export const userController = {
     createAdmin
 }
