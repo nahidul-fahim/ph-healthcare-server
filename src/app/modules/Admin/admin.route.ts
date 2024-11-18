@@ -8,5 +8,10 @@ router.get(
     AdminController.getALlAdmin
 )
 
+router.get(
+    "/:id",
+    AdminController.getById
+)
+
 
 export const adminRoutes = router;

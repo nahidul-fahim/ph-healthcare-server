@@ -4,6 +4,7 @@ import { paginationHelper } from "../../../helpers/paginationHelper";
 
 const prisma = new PrismaClient();
 
+// get all admin from db
 const getAllAdminFromDb = async (params: any, options: any) => {
     const { searchTerm, ...filterData } = params;
     const { limit, page, skip } = paginationHelper.calculatePagination(options);
@@ -46,10 +47,32 @@ const getAllAdminFromDb = async (params: any, options: any) => {
                 createdAt: 'desc'
             }
     });
+    const total = await prisma.admin.count({
+        where: whereConditions
+    })
+    return {
+        meta: {
+            page,
+            limit,
+            total
+        },
+        data: result
+    };
+}
+
+// get single admin from db
+const getAdminByIdFromDb = async (id: string) => {
+    const result = await prisma.admin.findUnique({
+        where: {
+            id,
+            isDeleted: false
+        }
+    });
     return result;
 }
 
 
 export const AdminService = {
-    getAllAdminFromDb
+    getAllAdminFromDb,
+    getAdminByIdFromDb
 }

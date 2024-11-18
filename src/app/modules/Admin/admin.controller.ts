@@ -10,10 +10,24 @@ const getALlAdmin = async (req: Request, res: Response) => {
     res.status(200).json({
         success: true,
         message: "Admin data fetched",
+        meta: result.meta,
+        data: result.data
+    });
+}
+
+
+// get single from db by id
+const getById = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const result = await AdminService.getAdminByIdFromDb(id);
+    res.status(200).json({
+        success: true,
+        message: "Admin data fetched",
         data: result
     });
 }
 
 export const AdminController = {
-    getALlAdmin
+    getALlAdmin,
+    getById
 }
