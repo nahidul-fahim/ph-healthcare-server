@@ -13,7 +13,7 @@ const getALlAdmin = async (req: Request, res: Response) => {
         meta: result.meta,
         data: result.data
     });
-}
+};
 
 
 // get single from db by id
@@ -25,7 +25,7 @@ const getById = async (req: Request, res: Response) => {
         message: "Admin data fetched",
         data: result
     });
-}
+};
 
 // update data
 const updateData = async (req: Request, res: Response) => {
@@ -36,10 +36,22 @@ const updateData = async (req: Request, res: Response) => {
         message: "Admin data updated",
         data: result
     });
-}
+};
+
+// soft delete
+const softDelete = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const result = await AdminService.softDeleteFromDb(id);
+    res.status(200).json({
+        success: true,
+        message: "Admin data deleted",
+        data: result,
+    });
+};
 
 export const AdminController = {
     getALlAdmin,
     getById,
-    updateData
+    updateData,
+    softDelete
 }

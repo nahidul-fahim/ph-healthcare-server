@@ -18,5 +18,10 @@ router.patch(
     AdminController.updateData
 )
 
+router.delete(
+    "/:id",
+    AdminController.softDelete
+)
+
 
 export const adminRoutes = router;
