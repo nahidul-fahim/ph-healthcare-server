@@ -13,5 +13,10 @@ router.get(
     AdminController.getById
 )
 
+router.patch(
+    "/:id",
+    AdminController.updateData
+)
+
 
 export const adminRoutes = router;
