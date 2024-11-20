@@ -3,55 +3,57 @@ import { AdminService } from "./admin.service";
 import pick from "../../../shared/pick";
 import { adminFilterableFields } from "./admin.constant";
 import sendResponse from "../../../shared/sendResponse";
+import { HttpStatus } from "http-status-ts";
+import catchAsync from "../../../shared/catchAsync";
 
-const getALlAdmin = async (req: Request, res: Response) => {
+const getALlAdmin = catchAsync(async (req: Request, res: Response) => {
     const filters = pick(req.query, adminFilterableFields);
     const options = pick(req.query, ['page', 'limit', 'sortBy', 'sortOrder']);
     const result = await AdminService.getAllAdminFromDb(filters, options);
     sendResponse(res, {
-        statusCode: 200,
+        statusCode: HttpStatus.OK,
         success: true,
         message: "Admin data fetched!",
         meta: result.meta,
         data: result.data
     })
-};
+});
 
 // get single from db by id
-const getById = async (req: Request, res: Response) => {
+const getById = catchAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
     const result = await AdminService.getAdminByIdFromDb(id);
     sendResponse(res, {
-        statusCode: 200,
+        statusCode: HttpStatus.OK,
         success: true,
         message: "Admin data fetched!",
         data: result
     })
-};
+});
 
 // update data
-const updateData = async (req: Request, res: Response) => {
+const updateData = catchAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
     const result = await AdminService.updateIntoDb(id, req.body);
     sendResponse(res, {
-        statusCode: 200,
+        statusCode: HttpStatus.OK,
         success: true,
         message: "Admin data updated",
         data: result
     })
-};
+});
 
 // soft delete
-const softDelete = async (req: Request, res: Response) => {
+const softDelete = catchAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
     const result = await AdminService.softDeleteFromDb(id);
     sendResponse(res, {
-        statusCode: 200,
+        statusCode: HttpStatus.OK,
         success: true,
         message: "Admin data deleted",
         data: result
     })
-};
+});
 
 export const AdminController = {
     getALlAdmin,
