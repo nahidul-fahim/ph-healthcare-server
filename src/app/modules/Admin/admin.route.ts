@@ -1,5 +1,7 @@
 import express from "express";
 import { AdminController } from "./admin.controller";
+import validateRequest from "../../middlewares/validateRequest";
+import { adminValidationSchemas } from "./admin.validation";
 
 const router = express.Router();
 
@@ -15,6 +17,7 @@ router.get(
 
 router.patch(
     "/:id",
+    validateRequest(adminValidationSchemas.update),
     AdminController.updateData
 )
 
