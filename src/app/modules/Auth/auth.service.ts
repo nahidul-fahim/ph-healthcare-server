@@ -1,6 +1,8 @@
 import { PrismaClient, UserStatus } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { jwtHelpers } from "../../../helpers/jwtHelpers";
+import config from "../../../config";
+import { Secret } from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 
@@ -39,6 +41,43 @@ const loginUser = async (payload: {
     return {
         accessToken,
         refreshToken,
-        needPasswordChange: userData.needPasswordChange
+        needPasswordChange: userData.needsPasswordChange
     };
 };
+
+
+const refreshToken = async (token: string) => {
+    let decodedData;
+    try {
+        decodedData = jwtHelpers.verifyToken(token, config.jwt.refresh_token_secret as Secret);
+    }
+    catch (err) {
+        throw new Error("You are not authorized!")
+    }
+
+    const userData = await prisma.user.findUniqueOrThrow({
+        where: {
+            email: decodedData.email,
+            status: UserStatus.ACTIVE
+        }
+    });
+
+    const accessToken = jwtHelpers.generateToken({
+        email: userData.email,
+        role: userData.role
+    },
+        config.jwt.jwt_secret as Secret,
+        config.jwt.expires_in as string
+    );
+
+    return {
+        accessToken,
+        needPasswordChange: userData.needsPasswordChange
+    };
+
+};
+
+
+export const AuthServices = {
+    loginUser
+}
