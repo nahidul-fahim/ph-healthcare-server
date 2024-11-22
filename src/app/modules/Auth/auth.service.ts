@@ -6,6 +6,7 @@ import { Secret } from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 
+// login user
 const loginUser = async (payload: {
     email: string,
     password: string
@@ -46,6 +47,7 @@ const loginUser = async (payload: {
 };
 
 
+// refresh token
 const refreshToken = async (token: string) => {
     let decodedData;
     try {
@@ -79,5 +81,6 @@ const refreshToken = async (token: string) => {
 
 
 export const AuthServices = {
-    loginUser
+    loginUser,
+    refreshToken
 }
