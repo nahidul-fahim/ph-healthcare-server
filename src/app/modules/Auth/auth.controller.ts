@@ -2,9 +2,7 @@ import { Request, Response } from "express";
 import catchAsync from "../../../shared/catchAsync";
 import { AuthServices } from "./auth.service";
 import sendResponse from "../../../shared/sendResponse";
-import { HttpStatus } from "http-status-ts";
-
-
+import { StatusCodes } from "http-status-codes";
 
 const loginUser = catchAsync(async (req: Request, res: Response) => {
     const result = await AuthServices.loginUser(req.body);
@@ -17,7 +15,7 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
     });
 
     sendResponse(res, {
-        statusCode: HttpStatus.OK,
+        statusCode: StatusCodes.OK,
         success: true,
         message: "Logged in successfully!",
         data: {
@@ -33,7 +31,7 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
     const result = await AuthServices.refreshToken(refreshToken);
 
     sendResponse(res, {
-        statusCode: HttpStatus.OK,
+        statusCode: StatusCodes.OK,
         success: true,
         message: "Access token generated successfully!",
         data: result
