@@ -4,6 +4,7 @@ import { AuthServices } from "./auth.service";
 import sendResponse from "../../../shared/sendResponse";
 import { StatusCodes } from "http-status-codes";
 
+// login user
 const loginUser = catchAsync(async (req: Request, res: Response) => {
     const result = await AuthServices.loginUser(req.body);
 
@@ -25,6 +26,7 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
     })
 });
 
+// refresh token
 const refreshToken = catchAsync(async (req: Request, res: Response) => {
     const { refreshToken } = req.cookies;
 
@@ -43,7 +45,23 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
 });
 
 
+// change password
+const changePassword = catchAsync(async (req: Request & { user?: any }, res: Response) => {
+    const user = req.user;
+
+    const result = await AuthServices.changePassword(user, req.body);
+
+    sendResponse(res, {
+        statusCode: StatusCodes.OK,
+        success: true,
+        message: "Password Changed successfully",
+        data: result
+    })
+});
+
+
 export const AuthController = {
     loginUser,
-    refreshToken
+    refreshToken,
+    changePassword
 }
